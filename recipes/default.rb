@@ -43,7 +43,7 @@ end
 
 yum_repository 'webtatic' do
   description "['librenms']['additional_repo']['desc']"
-  mirrorurl "node['librenms']['additional_repo']['url']"
+  mirrorlist "node['librenms']['additional_repo']['url']"
   gpgcheck "['librenms']['additional_repo']['gpgcheck']"
   enabled "['librenms']['additional_repo']['enabled']"
 end
@@ -64,7 +64,6 @@ end
 
 group "node['librenms']['group']" do
   action :create
-  comment 'LibreNMS group'
 end
 
 user "node['librenms']['user']" do
