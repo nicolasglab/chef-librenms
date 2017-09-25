@@ -14,4 +14,6 @@ TODO:
  - External auth (LDAP, AD, Radius, etc.)
  - SElinux support
  - Performance optimisations from LibreNMS doc
+ - Worldmap support
+ - poller modules support
  - all other extensions support

@@ -1,7 +1,8 @@
 
 default['mariadb']['user_librenms']['password'] = 'default'
 
-default['librenms']['path'] = '/var/opt/librenms'
+default['librenms']['root_dir'] = '/var/opt/'
+default['librenms']['path'] = "node['librenms']['root_dir']/librenms"
 default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
@@ -48,3 +49,9 @@ default['librenms']['rrdcached']['config_file'] = '/etc/sysconfig/rrdcached'
 default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -B -R -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
 default['librenms']['rrdcached']['user_options'] = "-s node['librenms']['user'] -U node['librenms']['user'] -G node['librenms']['group']"
 default['librenms']['rrdcached']['path'] = "node['librenms']['path']/rrd"
+
+# autodiscover switches
+default['librenms']['autodiscover']['xdp'] = 'false'
+default['librenms']['autodiscover']['ospf'] = 'false'
+default['librenms']['autodiscover']['bgp'] = 'false'
+default['librenms']['autodiscover']['snmpscan'] = 'false'

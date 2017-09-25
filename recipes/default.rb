@@ -7,7 +7,6 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
-# mariadb special criteo ?
 package %w[mariadb-server mariadb]
 
 service 'mariadb' do
@@ -32,7 +31,6 @@ execute 'create_db' do
   not_if 'echo "show tables;" | mysql -uroot librenms'
 end
 
-# voir cookbook mysql/mariadb
 template '/etc/my.cnf.d/librenms-mysqld.cnf' do
   source 'librenms-mysqld.cnf.erb'
   owner 'root'
@@ -122,7 +120,27 @@ web_app do
   allow_override "node['librenms']['web']['override']"
 end
 
-# remote_file librenms + extract
+remote_file librenms_archive do
+  source "#{node['librenms']['install']['url']}/#{node['librenms']['install']['version']}.zip"
+  owner node['librenms']['user']
+  group node['librenms']['group']
+  mode '0755'
+end
+
+execute 'extract librenms archive' do
+  command "unzip #{librenms_archive} -d #{node['librenms']['root_dir']}"
+  user 'root'
+  group 'root'
+  umask '022'
+  creates librenms_archive
+end
+
+execute 'create symlink' do
+  command "ln -s #{node['librenms']['root_dir']}/librenms-#{node['librenms']['install']['version']} #{node['librenms']['path']}"
+  user 'root'
+  group 'root'
+  creates librenms_archive
+end
 
 directory "node['librenms']['path']/rrd" do
   owner node['librenms']['user']
@@ -131,7 +149,7 @@ directory "node['librenms']['path']/rrd" do
   action :create
 end
 
-# cron mgmt to be able to disable them if not wanted.
+# cron mgmt to be able to disable them one by one if not wanted.
 cron 'discovery all' do
   command "node['librenms']['path']/discovery.php -h all >> /dev/null 2>&1"
   hour '*/6'
@@ -210,19 +228,22 @@ template "node['librenms']['rrdcached']['config_file']" do
   only_if { node.normal['librenms']['rrdcached']['enabled'] = 'true' }
 end
 
-# config.php
 template "node['librenms']['path']/config.php" do
   source 'config.php.erb'
   owner "node['librenms']['user']"
   group "node['librenms']['group']"
   mode '0640'
   variables(
-    db_pass:  "node['mariadb']['user_librenms']['password']",
-    user:     "node['librenms']['user']",
-    path:     "node['librenms']['path']",
-    networks: "node['librenms']['scanning_discovery']",
-    hostname: "node['librenms']['hostname']",
-    port:     "node['librenms']['port_service']",
+    db_pass:       "node['mariadb']['user_librenms']['password']",
+    user:          "node['librenms']['user']",
+    path:          "node['librenms']['path']",
+    networks:      "node['librenms']['network_discovery']",
+    hostname:      "node['librenms']['hostname']",
+    port:          "node['librenms']['port_service']",
+    auto_xdp:      "node['librenms']['autodiscover']['xdp']",
+    auto_ospf:     "node['librenms']['autodiscover']['ospf']",
+    auto_bgp:      "node['librenms']['autodiscover']['bgp']",
+    auto_snmpscan: "node['librenms']['autodiscover']['snmpscan']",
   )
 end
 
