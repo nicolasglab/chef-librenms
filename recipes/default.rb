@@ -10,8 +10,8 @@ include_recipe 'logrotate'
 package %w[mariadb-server mariadb]
 
 service 'mariadb' do
-  supports supports status: true, restart: true, reload: true
-  action :start, :enable
+  supports restart: true
+  action :start
 end
 
 template '/tmp/create_db.sql' do
