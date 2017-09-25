@@ -1,0 +1,8 @@
+Metrics/LineLength:
+  Max: 150
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+
