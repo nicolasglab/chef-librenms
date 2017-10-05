@@ -42,8 +42,8 @@ end
 yum_repository 'webtatic' do
   description "['librenms']['additional_repo']['desc']"
   mirrorlist "node['librenms']['additional_repo']['url']"
-  gpgcheck "['librenms']['additional_repo']['gpgcheck']"
-  enabled "['librenms']['additional_repo']['enabled']"
+  gpgcheck true
+  enabled true
 end
 
 package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common \
@@ -100,7 +100,7 @@ template '/etc/snmp/snmpd.conf' do
 end
 
 remote_file '/usr/bin/distro' do
-  source "node['librenms']['snmp']['distro']"
+  source node['librenms']['snmp']['distro']
   owner 'root'
   group 'root'
   mode '0755'
@@ -112,7 +112,6 @@ apache_module 'php7_module' do
 end
 
 web_app do
-  name 'librenms'
   server_name "node['hostname']"
   server_name "node['librenms']['web']['name']"
   docroot "node['librenms']['path']/html"
@@ -120,8 +119,12 @@ web_app do
   allow_override "node['librenms']['web']['override']"
 end
 
+tmpdir = node['librenms']['install']['tmpdir']
+librenms_version = node['librenms']['install']['version']
+librenms_archive = File.join(tmpdir,librenms_version,".zip")
+
 remote_file librenms_archive do
-  source "#{node['librenms']['install']['url']}/#{node['librenms']['install']['version']}.zip"
+  source "#{node['librenms']['install']['url']}/#{librenms_version}"
   owner node['librenms']['user']
   group node['librenms']['group']
   mode '0755'
