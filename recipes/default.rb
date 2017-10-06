@@ -7,7 +7,7 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
-package %w[mariadb-server mariadb]
+package %w[mariadb-server mariadb-client]
 
 service 'mariadb' do
   supports restart: true
@@ -40,7 +40,7 @@ template '/etc/my.cnf.d/librenms-mysqld.cnf' do
 end
 
 yum_repository 'webtatic' do
-  description "['librenms']['additional_repo']['desc']"
+  description "node['librenms']['additional_repo']['desc']"
   mirrorlist "node['librenms']['additional_repo']['url']"
   gpgcheck true
   enabled true
