@@ -4,12 +4,11 @@
 Installation and configuration by chef
 
 For now:
-- Only on CentOS 7 (maybe RedHat, untested)
+- CentOS and Ubuntu.
 - Based on apache2.
 - rrdcached support
 
 TODO: 
- - Debian/Ubuntu support
  - nginx support
  - External auth (LDAP, AD, Radius, etc.)
  - SElinux support
