@@ -8,7 +8,7 @@ RRDC_USER=<%= @user %>
 #
 # To pass additional options, set OPTIONS here
 #
-OPTIONS="<%= @options %> <%= @user_options %>"
+OPTIONS="<%= @options %> -s <%= @user %> -U <%= @user %> -G <%= @group %>"
 
 #
 # Socket permissions

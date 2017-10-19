@@ -35,19 +35,15 @@ $config['snmp']['community'] = array("public");
 ### Authentication Model
 $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 
-### List of RFC1918 networks to allow scanning-based discovery
-<% for network in @networks %>
-$config['nets'][] = "<%= network %>";
-<% end %>
 
 # Uncomment the next line to disable daily updates
 #$config['update'] = 0;
 
 $config['fping'] = "/usr/sbin/fping";
-$config['autodiscovery']['xdp'] = <%= auto_xdp %>;
-$config['autodiscovery']['ospf'] = <%= auto_ospf %>;
-$config['autodiscovery']['bgp'] = <%= auto_bgp %>;
-$config['autodiscovery']['snmpscan'] = <%= auto_snmpscan %>;
+$config['autodiscovery']['xdp'] = <%= @xdp %>;
+$config['autodiscovery']['ospf'] = <%= @ospf %>;
+$config['autodiscovery']['bgp'] = <%= @bgp %>;
+$config['autodiscovery']['snmpscan'] = <%= @snmpscan %>;
 
 $config['rrdtool_version'] = '1.5.5';
 
