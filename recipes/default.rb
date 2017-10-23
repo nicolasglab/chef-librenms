@@ -27,7 +27,7 @@ user librenms_username do
   group librenms_group
   home librenms_homedir
   shell '/bin/bash'
-  manage_home true
+  manage_home false
 end
 
 remote_file "#{librenms_archive}.zip" do
@@ -129,8 +129,8 @@ when 'rhel'
 
   yum_repository 'webtatic' do
     description "#{node['librenms']['additional_repo']['desc']}"
-    mirrorlist "#{node['librenms']['additional_repo']['url']}"
-    gpgcheck true
+    baseurl "#{node['librenms']['additional_repo']['url']}"
+    gpgcheck false
     enabled true
   end
 
@@ -140,7 +140,7 @@ when 'rhel'
     action :install
   end
 
-  apache_module 'php7_module' do
+  apache_module 'php7' do
     filename 'libphp7.so'
   end
 

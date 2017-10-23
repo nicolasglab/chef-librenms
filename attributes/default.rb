@@ -23,7 +23,7 @@ default['librenms']['user_admin'] = 'admin'
 default['librenms']['user_pass'] = 'admin'
 
 # repo for php7
-default['librenms']['additional_repo']['url'] = 'https://mirror.webtatic.com/yum/el7/$basearch/debug/mirrorlist'
+default['librenms']['additional_repo']['url'] = 'https://repo.webtatic.com/yum/el7/$basearch/'
 default['librenms']['additional_repo']['desc'] = 'Webtatic repo EL7'
 
 # downloading librenms
