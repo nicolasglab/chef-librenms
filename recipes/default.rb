@@ -299,14 +299,11 @@ template "#{librenms_homedir}/config.php" do
   source 'config.php.erb'
   owner librenms_username
   group librenms_group
-  mode '0640'
+  mode '0644'
   variables(
     db_pass:  (node['mariadb']['user_librenms']['password']).to_s,
     user:     librenms_username,
     path:     librenms_homedir,
-    # networks: (node['librenms']['network_discovery']).to_s,
-    hostname: (node['librenms']['hostname']).to_s,
-    port:     (node['librenms']['port_service']).to_s,
     xdp:      (node['librenms']['autodiscover']['xdp']).to_s,
     ospf:     (node['librenms']['autodiscover']['ospf']).to_s,
     bgp:      (node['librenms']['autodiscover']['bgp']).to_s,
