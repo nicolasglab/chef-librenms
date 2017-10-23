@@ -314,7 +314,13 @@ template "#{librenms_homedir}/config.php" do
   )
 end
 
-# exec build-base.php
+execute 'build base' do
+  action :run
+  command 'php build-base.php'
+  cwd librenms_homedir
+  user 'root'
+  group 'root'
+end
 
 execute 'adduser admin' do
   action :run
