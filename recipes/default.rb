@@ -17,6 +17,19 @@ librenms_version = node['librenms']['install']['version']
 librenms_file = File.join(librenms_version, '.zip')
 librenms_archive = File.join(tmpdir, librenms_version)
 
+group librenms_group do
+  action :create
+end
+
+user librenms_username do
+  action :create
+  comment 'LibreNMS user'
+  group librenms_group
+  home librenms_homedir
+  shell '/bin/bash'
+  manage_home true
+end
+
 remote_file "#{librenms_archive}.zip" do
   source "#{node['librenms']['install']['url']}/#{librenms_file}"
   owner librenms_username
@@ -94,7 +107,7 @@ when 'rhel'
   librenms_phpconf = '/etc/php.d/librenms.ini'
   rrdcached_config = '/etc/sysconfig/rrdcached'
 
-  package %w[mariadb-server mariadb-client]
+  package %w[mariadb mariadb-server]
 
   service 'mariadb' do
     supports status: true, restart: true, reload: true
@@ -156,19 +169,6 @@ execute 'create_db' do
   user 'root'
   group 'root'
   not_if 'echo "show tables;" | mysql -uroot librenms'
-end
-
-group librenms_group do
-  action :create
-end
-
-user librenms_username do
-  action :create
-  comment 'LibreNMS user'
-  group librenms_group
-  home librenms_homedir
-  shell '/bin/bash'
-  manage_home true
 end
 
 logrotate_app 'librenms' do
