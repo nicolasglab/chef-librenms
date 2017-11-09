@@ -128,8 +128,8 @@ when 'rhel'
   end
 
   yum_repository 'webtatic' do
-    description "#{node['librenms']['additional_repo']['desc']}"
-    baseurl "#{node['librenms']['additional_repo']['url']}"
+    description (node['librenms']['additional_repo']['desc']).to_s
+    baseurl (node['librenms']['additional_repo']['url']).to_s
     gpgcheck false
     enabled true
   end
@@ -207,12 +207,12 @@ remote_file '/usr/bin/distro' do
 end
 
 web_app 'librenms' do
-  server_port "#{node['librenms']['web']['port']}"
+  server_port (node['librenms']['web']['port']).to_s
   server_name node['hostname'].to_s
-  server_alias "#{node['librenms']['web']['name']}"
+  server_alias (node['librenms']['web']['name']).to_s
   docroot "#{librenms_homedir}/html"
-  directory_options "#{node['librenms']['web']['options']}"
-  allow_override "#{node['librenms']['web']['override']}"
+  directory_options (node['librenms']['web']['options']).to_s
+  allow_override (node['librenms']['web']['override']).to_s
 end
 
 # cron mgmt to be able to disable them one by one if not wanted.
